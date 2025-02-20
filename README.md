@@ -58,4 +58,12 @@ If you find this work useful in your research, please consider citing our paper:
 ```
 
 ## Acknowledgement
-Parts of this project were inspired by the following projects. We thank their contributors for their excellent work: [NTL](https://github.com/conditionWang/NTL), [CUTI-domain](https://github.com/LyWang12/CUTI-Domain), [SOPHON](https://github.com/ChiangE/Sophon), [CUPI-domain](https://github.com/LyWang12/CUPI-Domain), [TransNTL](https://github.com/tmllab/2024_CVPR_TransNTL), [SFDA](https://github.com/tntek/source-free-domain-adaptation), [DomainBed](https://github.com/facebookresearch/DomainBed)
+Parts of this project were inspired by the following projects. We thank their contributors for their excellent work: 
+- https://github.com/conditionWang/NTL
+- https://github.com/LyWang12/CUTI-Domain
+- https://github.com/ChiangE/Sophon
+- https://github.com/LyWang12/CUPI-Domain
+- https://github.com/tmllab/2024_CVPR_TransNTL
+- https://github.com/tntek/source-free-domain-adaptation
+- https://github.com/facebookresearch/DomainBed
+- https://github.com/zju-vipa/CMI
