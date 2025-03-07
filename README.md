@@ -14,8 +14,8 @@ This figure shows the comparison of 5 methods (<font color="#7884AC">NTL</font>,
 
 ## Survey
 
-
 📌 We are actively tracking and updating the latest research about NTL. 
+- **IP-CLIP** (CVPR 2025): [Vision-Language Model IP Protection via Prompt-based Learning](https://arxiv.org/pdf/2503.02393)
 - **JailNTL** (CVPR 2025): [Jailbreaking the Non-Transferable Barrier via Test-Time Data Disguising](https://github.com/tmllab/2025_CVPR_JailNTL)
 - **NTP** (ECCV 2024): [Non-transferable Pruning](https://arxiv.org/pdf/2410.08015)
 - **CUPI-domain** (TPAMI 2024): [Say No to Freeloader: Protecting Intellectual Property of Your Deep Model](https://arxiv.org/pdf/2408.13161)
@@ -29,7 +29,7 @@ This figure shows the comparison of 5 methods (<font color="#7884AC">NTL</font>,
 - **UNTL** (EMNLP 2022): [Unsupervised Non-transferable Text Classification](https://arxiv.org/pdf/2210.12651)
 - **NTL** (ICLR 2022): [Non-Transferable Learning: A New Approach for Model Ownership Verification and Applicability Authorization](https://arxiv.org/pdf/2106.06916)
 
-👉 Summary of NTL methods according to Field (modal, task), Data (label space, target supervision, source data dependent), NonTransferable Approach (feature or output space), and Robustness (whether source and target domain robustness have been evaluated)
+👉 Summary of NTL methods according to **Field** (modal, task), **Data** (label space, target supervision, source data dependent), **Non-Transferable Approach** (feature or output space), and **Robustness** (whether source and target domain robustness have been evaluated)
 
 ![](figs/review.png)
 
