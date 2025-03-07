@@ -5,11 +5,12 @@
 
 Over the past decades, researchers have primarily focused on improving the generalization abilities of models, with limited attention given to regulating such generalization. However, the ability of models to generalize to unintended data (e.g., harmful or unauthorized data) can be exploited by malicious adversaries in unforeseen ways, potentially resulting in violations of model ethics. **Non-transferable learning (NTL)**, a task aimed at reshaping the generalization abilities of deep learning models, was proposed to address these challenges. While numerous methods have been proposed in this field, a comprehensive review of existing progress and a thorough analysis of current limitations remain lacking. 
 
-We bridge this gap by presenting the **first comprehensive survey** on NTL and introducing **NTLBench**, the first benchmark to evaluate NTL performance and robustness within a unified framework. 
+We bridge this gap by 👉 presenting the [first comprehensive survey](https://github.com/tmllab/NTLBench/tree/main?tab=readme-ov-file#survey) on NTL and 👉 introducing [NTLBench](https://github.com/tmllab/NTLBench/tree/main?tab=readme-ov-file#ntlbench), the first benchmark to evaluate NTL performance and robustness within a unified framework. 
 
 ![](figs/abstract.png)
 
-This figure shows the comparison of 5 methods (<font color="#7884AC">NTL</font>, <font color="#7884AC">CUTI-domain</font>, <font color="#7884AC">H-NTL</font>, <font color="#7884AC">SOPHON</font>, <font color="#7884AC">CUPI-domain</font>) on CIFAR \& STL with VGG-13, where we evaluate non-transferability performance and post-training robustness against 5 <font color="#E4785F">source domain fine-tuning (SourceFT)</font> attacks, 4 <font color="#8151BA">target domain fine-tuning (TargetFT)</font> attacks, and 6 <font color="#59A4B7">source-free domain adaptation (SFDA)</font> attacks (higher value means better performance/robustness). 
+🧐 This figure shows the comparison of 5 methods (<font color="#7884AC">NTL</font>, <font color="#7884AC">CUTI-domain</font>, <font color="#7884AC">H-NTL</font>, <font color="#7884AC">SOPHON</font>, <font color="#7884AC">CUPI-domain</font>) on CIFAR \& STL with VGG-13, where we evaluate non-transferability performance and post-training robustness against 5 <font color="#E4785F">source domain fine-tuning (SourceFT)</font> attacks, 4 <font color="#8151BA">target domain fine-tuning (TargetFT)</font> attacks, and 6 <font color="#59A4B7">source-free domain adaptation (SFDA)</font> attacks (higher value means better performance/robustness). 
+
 
 
 ## Survey
@@ -36,27 +37,27 @@ This figure shows the comparison of 5 methods (<font color="#7884AC">NTL</font>,
 
 ## NTLBench
 
-NTLBench is the first benchmark for non-transferable learning (NTL), which contains a standard and uniﬁed training and evaluation process. NTLBench supports 5 SOTA NTL methods, 9 datasets (more than 116 domain pairs), 5 network architectures families, and 15 post-training attacks from 3 attack settings, providing more than 40,000 experimental conﬁgurations.
+NTLBench is the first benchmark for **non-transferable learning** (NTL), which contains a standard and uniﬁed training and evaluation process. NTLBench supports **5 SOTA NTL methods**, **9 datasets** (more than 116 domain pairs), **5 network architectures families**, and **15 post-training attacks** from 3 attack settings, providing **more than 40,000** experimental conﬁgurations.
 
 ### Components
-- Pretraining
+- [x] NTL Training
   - [x] `NTL` (ICLR 2022) [[Paper](https://arxiv.org/pdf/2106.06916)][[Code](https://github.com/conditionWang/NTL)]
   - [x] `CUTI-domain` (CVPR 2023) [[Paper](https://openaccess.thecvf.com/content/CVPR2023/papers/Wang_Model_Barrier_A_Compact_Un-Transferable_Isolation_Domain_for_Model_Intellectual_CVPR_2023_paper.pdf)][[Code](https://github.com/LyWang12/CUTI-Domain)]
   - [x] `H-NTL` (ICLR 2024) [[Paper](https://openreview.net/pdf?id=FYKVPOHCpE)][[Code](https://github.com/tmllab/NTLBench)]
   - [x] `SOPHON` (IEEE S&P 2024) [[Paper](https://arxiv.org/pdf/2404.12699)][[Code](https://github.com/ChiangE/Sophon)]
   - [x] `CUPI-domain` (T-PAMI 2024) [[Paper](https://arxiv.org/pdf/2408.13161)][[Code](https://github.com/LyWang12/CUPI-Domain)] 
-- Source domain fine-tuning
+- [x] Source Domain Fine-Tuning
   - [x] Fine-tuning Strategies (`initFC-all`, `initFC-FC`, `direct-FC`, `direct-all`)
   - [x] `TransNTL` (CVPR 2024) [[Paper](https://openaccess.thecvf.com/content/CVPR2024/papers/Hong_Your_Transferability_Barrier_is_Fragile_Free-Lunch_for_Transferring_the_Non-Transferable_CVPR_2024_paper.pdf)][[Code](https://github.com/tmllab/2024_CVPR_TransNTL)]
-- Target domain fine-tuning
+- [x] Target Domain Fine-Tuning
   - [x] Fine-tuning Strategies (`initFC-all`, `initFC-FC`, `direct-FC`, `direct-all`)
-- Source-free domain adaptation
-  - [ ] `SHOT`
-  - [ ] `CoWA`
-  - [ ] `NRC`
-  - [ ] `PLUE`
-  - [ ] `AdaContrast`
-  - [ ] `DIFO`
+- [ ] Source-Free Domain Adaptation (coming soon 🤓)
+  - [ ] `SHOT` (ICML 2020)
+  - [ ] `CoWA` (ICML 2022)
+  - [ ] `NRC` (NeurIPS 2021)
+  - [ ] `PLUE` (CVPR 2023)
+  - [ ] `AdaContrast` (CVPR 2022)
+  - [ ] `DIFO` (CVPR 2024)
 
 ### Quickstart
 
