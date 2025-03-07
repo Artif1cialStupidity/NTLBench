@@ -2,7 +2,6 @@
 
 [![arXiv](https://img.shields.io/badge/Arxiv-2502.13593-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2502.13593)
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Ftmllab%2FNTLBench&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
 Over the past decades, researchers have primarily focused on improving the generalization abilities of models, with limited attention given to regulating such generalization. However, the ability of models to generalize to unintended data (e.g., harmful or unauthorized data) can be exploited by malicious adversaries in unforeseen ways, potentially resulting in violations of model ethics. Non-transferable learning (NTL), a task aimed at reshaping the generalization abilities of deep learning models, was proposed to address these challenges. While numerous methods have been proposed in this field, a comprehensive review of existing progress and a thorough analysis of current limitations remain lacking. 
 
@@ -35,19 +34,31 @@ This figure shows the comparison of 5 methods (<font color="#7884AC">NTL</font>,
 
 ## NTLBench
 
-We include following methods:
+NTLBench is the first benchmark for non-transferable learning (NTL), which contains a standard and uniﬁed training and evaluation process. NTLBench supports 5 SOTA NTL methods, 9 datasets (more than 116 domain pairs), 5 network architectures families, and 15 post-training attacks from 3 attack settings, providing more than 40,000 experimental conﬁgurations.
+
+### Components
+
+- Pretraining
+  - [x] NTL
+  - [x] CUTI-domain
+  - [x] H-NTL
+  - [x] TransNTL
+  - [x] SOPHON
+  - [x] CUPI-domain
+- Source domain fine-tuning
+- Target domain fine-tuning
+- Source-free domain adaptation
+
+<!-- Currently, NTLBench supports following methods:
 - [[Paper](https://arxiv.org/pdf/2106.06916)][[Code](https://github.com/conditionWang/NTL)] `NTL` (ICLR 2022) 
 - [[Paper](https://openaccess.thecvf.com/content/CVPR2023/papers/Wang_Model_Barrier_A_Compact_Un-Transferable_Isolation_Domain_for_Model_Intellectual_CVPR_2023_paper.pdf)][[Code](https://github.com/LyWang12/CUTI-Domain)] `CUTI-domain` (CVPR 2023) 
 - [[Paper](https://openreview.net/pdf?id=FYKVPOHCpE)][[Code](https://github.com/tmllab/NTLBench)] `HNTL` (ICLR 2024) 
 - [[Paper](https://openaccess.thecvf.com/content/CVPR2024/papers/Hong_Your_Transferability_Barrier_is_Fragile_Free-Lunch_for_Transferring_the_Non-Transferable_CVPR_2024_paper.pdf)][[Code](https://github.com/tmllab/2024_CVPR_TransNTL)] `TransNTL` (CVPR 2024) 
 - [[Paper](https://arxiv.org/pdf/2404.12699)][[Code](https://github.com/ChiangE/Sophon)] `SOPHON` (IEEE S&P 2024)
-- [[Paper](https://arxiv.org/pdf/2408.13161)][[Code](https://github.com/LyWang12/CUPI-Domain)] `CUPI-domain` (T-PAMI 2024)
+- [[Paper](https://arxiv.org/pdf/2408.13161)][[Code](https://github.com/LyWang12/CUPI-Domain)] `CUPI-domain` (T-PAMI 2024) -->
 
-<!-- We propose the ﬁrst NTL benchmark (NTLBench), which contains a standard and uniﬁed training and evaluation process. NTLBench supports 5 SOTA NTL methods, 9 datasets (more than 116 domain pairs), 5 network architectures families, and 15 post-training attacks from 3 attack settings, providing more than 40,000 experimental conﬁgurations. -->
 
-```
-NTLBench will be released soon.
-```
+
 
 
 ## Citation
