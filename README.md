@@ -62,18 +62,17 @@ NTLBench is the first benchmark for **non-transferable learning** (NTL), which c
 ### Quickstart
 
 #### 1. Installation
-Clone the repository:
+Clone the repository and install dependencies:
 ```
 git clone https://github.com/tmllab/NTLBench.git
 cd NTLBench
-```
-Install dependencies:
-
-```
 pip install -r requirements.txt
 ```
 
 #### 2. Preparing Data
+
+We currently support `Digits` (MNIST, USPS, SVHN, MNIST-M, SYND), `RMNIST`, `CIFAR/STL`, `VisDA` (VisDA-T, VisDA-V), `OfficeHome`, `DomainNet`, `VLCS`, `PACS`, and `Terra Incognita`. 
+
 Download datasets:
 ```
 mkdir ./data/
@@ -83,35 +82,52 @@ Pre-split the dataset into training/validation/testing sets:
 ```
 python data_split.py
 ```
-This will create and split datasets to the `./data_presplit` folder.
+This command will create and split datasets to the `./data_presplit` folder.
 
-We currently support `Digits` (MNIST, USPS, SVHN, MNIST-M, SYND), `RMNIST`, `CIFAR/STL`, `VisDA` (VisDA-T, VisDA-V), `OfficeHome`, `DomainNet`, `VLCS`, `PACS`, and `Terra Incognita`.
+We will also provide pre-split demo datasets in **Google Drive** (coming soon). You can download them and save to `./data_presplit/`.
+
 
 #### 3. Training NTL
 
 You can pre-train SL or NTL models from scratch by running:
 ```
-python NTL_pretrain.py
+CUDA_VISIBLE_DEVICES=0 python NTL_pretrain.py
 ```
+We also provide model files in **Google Drive** (coming soon) which were pretrained on our demo pre-split datasets. You can save them to `./saved_models/`.
+
+💡 We use [`wandb`](https://wandb.ai/site) to organize experiments and record resutls. Config files for training NTL are stored in `./config/<domain-pair>/pretrain.yml`.**Important Args** are illustrated as belows:
+- `task_name`: {`SL`/`tNTL`/`tCUTI`/`tHNTL`/`tCUPI`/`tSOPHON`} for supervised learning (SL) on the source domain, or pretraining by using different NTL methods on the source & target domains.
+- `pre_split`: set to `True` for use the pre-split data.
+- `data_transform`: set to `ntl` to follow the image transformation in [NTL](https://github.com/conditionWang/NTL).
+- `teacher_network`: 
+    - VGG: `vgg11`, `vgg13`, `vgg19`, `vgg11bn`, `vgg13bn`, `vgg19bn` 
+    - ResNet: `resnet18`, `resnet34`, `resnet50`, `wide_resnet50_2`
+    - Transformer: `vit_tiny`, `vit_base`, `vit_large`, `vit_huge`
+- `teacher_pretrain`: whether use the *ImageNet-1K pretrained weight* for initialization. 
+- `pretrained_teacher`: always set to `auto` for automatic saved path and name.
+- `pretrain_epochs`: pretraining epoch.
+- `pretrain_lr`: pretrain learning rate.
+- `additional parameters for HNTL`: for `HNTL`, the above [`pretrain_epochs`, `pretrain_lr`] are invalid. We use [`HNTL_Disen_epochs`, `HNTL_Disen_lr`, ...] for training disentanglement and [`HNTL_KD_epochs`, `HNTL_KD_lr`, ...] for training KD.
+- `additional parameters for tCUPI`: for `CUPI`, to keep the same net arch as other methods, we calculate the `Discrimination_loss` on the `Dropout` output of the first Linear layer of the classifier, rather than the `Bottleneck` layer as original [CUPI-domain implementation](https://github.com/LyWang12/CUPI-Domain/blob/main/train_ts_digit.py#L113).
 
 #### 4. Attack NTL Models
 
 ##### 4.1 Source Domain Fine-Tuning
 Please run the `NTL_postattack_src.py` to evaluate the robustness of each NTL method. You can select the fine-tuning attack or the SOTA attack `TransNTL`.
 ```
-python NTL_postattack_src.py
+CUDA_VISIBLE_DEVICES=0 python NTL_postattack_src.py
 ```
 
 ##### 4.2 Target Domain Fine-Tuning
 Please run the `NTL_postattack_tgt.py` to evaluate the robustness of each NTL method against target domain fine-tuning. You can select the fine-tuning attack under the assumption that the attacker can access parts of labeled target domain data.
 ```
-python NTL_postattack_tgt.py
+CUDA_VISIBLE_DEVICES=0 python NTL_postattack_tgt.py
 ```
 
 ##### 4.3 Source-Free Domain Adaptation
 Please also run the `NTL_postattack_tgt.py` to evaluate the robustness of each NTL method against SFDA methods using **unlabeled** target domain. You can select the fine-tuning attack under the assumption that the attacker can access parts of unlabeled target domain data.
 ```
-python NTL_postattack_tgt.py
+CUDA_VISIBLE_DEVICES=0 python NTL_postattack_tgt.py
 ```
 
 
