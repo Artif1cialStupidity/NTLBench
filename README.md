@@ -53,7 +53,7 @@ NTLBench is the first benchmark for **non-transferable learning** (NTL), which c
   - [x] `TransNTL` (CVPR 2024) [[Paper](https://openaccess.thecvf.com/content/CVPR2024/papers/Hong_Your_Transferability_Barrier_is_Fragile_Free-Lunch_for_Transferring_the_Non-Transferable_CVPR_2024_paper.pdf)][[Code](https://github.com/tmllab/2024_CVPR_TransNTL)]
 - [x] **Target Domain Fine-Tuning**
   - [x] Fine-tuning Strategies (`initFC-all`, `initFC-FC`, `direct-FC`, `direct-all`)
-- [ ] **Source-Free Domain Adaptation** (coming soon 🤓)
+- [ ] **Source-Free Domain Adaptation**
   - [ ] `SHOT` (ICML 2020)
   - [ ] `CoWA` (ICML 2022)
   - [ ] `NRC` (NeurIPS 2021)
