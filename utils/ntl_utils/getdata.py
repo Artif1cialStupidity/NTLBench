@@ -272,7 +272,7 @@ class Cus_Dataset(data.Dataset):
             #img = Image.open(self.list_img[item])
             img = self.list_img[item]
             label = self.list_label[item]
-            return self.transform(img), torch.LongTensor([label])
+            return self.transform(img), torch.from_numpy(label).long().unsqueeze(0)
 
 
     def __len__(self):

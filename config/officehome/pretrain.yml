@@ -1,79 +1,53 @@
-#########################################
-# basic parameters
-#########################################
-device:
+device: 
   value: cuda:0
 task_name:
-  # value: SL
-  value: tNTL
-  # value: tCUTI
-  # value: tCUPI
-  # value: tHNTL
-  # value: tSOPHON
+  value: SL
 domain_src:
-  value: cifar
+  value: home_art
 domain_tgt:
-  value: stl
-patch_value:
-  value: default
+  value: home_rw
 image_size:
-  value: 64
+  value: 128
 num_classes:
-  value: 10
-
+  value: 65
 seed:
   value: 2023
 batch_size:
   value: 32
 num_workers:
-  value: 16
-
+  value: 4
 pre_split:
   value: True
 data_transform:
   value: ntl
-
-#########################################
-# parameters for training SL/NTL models
-#########################################
 teacher_network:
-  value: vgg13
-  # value: vgg13bn
-  #value: resnet34
-  # value: wide_resnet50_2
-  # value: vit_base
-  # value: vit_tiny
+  value: resnet50
 teacher_pretrain:
   value: True
 train_teacher_scratch:
   value: True
-  # value: False
 save_train_teacher:
   value: True
-  # value: False
 pretrained_teacher:
-  # value: saved_models/SL_sd.pth
   value: auto
 pretrain_epochs:
-  value: 20
+  value: 30
 pretrain_lr:
   value: 0.001
+SOPHON_ways:
+  value: 65
+SOPHON_total_loop:
+  value: 1000
 pretrain_momentum:
   value: 0.9
 pretrain_weight_decay:
   value: 0.0001
 #########################################
-# additional parameters for NTL
-#########################################
-NTL_alpha:
-  value: 0.1
-NTL_beta:
-  value: 0.1
-#########################################
 # additional parameters for CUTI-domain
 #########################################
 CUTI_alpha:
   value: 0.1
+
 #########################################
 # additional parameters for HNTL
 #########################################
@@ -87,7 +61,7 @@ HNTL_lambda_disent:
   value: 0.08
 HNTL_student_pretrain:
   value: True
-# stage 1
+# stage 1: Disentanglement
 HNTL_Disen_epochs:
   value: 30
 HNTL_Disen_lr:
@@ -96,32 +70,22 @@ HNTL_Disen_momentum:
   value: 0.9
 HNTL_Disen_weight_decay:
   value: 0.0001
-# stage 2
+# stage 2: Knowledge Distillation
 HNTL_KD_epochs:
   value: 20
 HNTL_KD_lr:
-  # value: 0.01
-  # value: 0.0001
   value: 0.001
-  # value: 0.1
 HNTL_KD_momentum:
   value: 0.9
 HNTL_KD_weight_decay:
   value: 0.0001
 #########################################
-# additional parameters for CUPT-domain
-#########################################
-CUPI_alpha:
-  value: 0.1
-CUPI_kl:
-  value: 0.1
-#########################################
 # additional parameters for SOPHON
 #########################################
 SOPHON_ways:
-  value: 10
+  value: 65  # 注意：PACS是7，OfficeHome是65，请根据数据集修改这个值！
 SOPHON_total_loop:
-  value: 1000
+  value: 2000
 SOPHON_ml_loop:
   value: 1
 SOPHON_nl_loop:
@@ -137,5 +101,4 @@ SOPHON_beta:
 SOPHON_adaptation_steps:
   value: 50
 SOPHON_maml_loss_func:
-  # value: 'inverse_loss'
   value: 'kl_loss'

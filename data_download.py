@@ -274,7 +274,7 @@ if __name__ == "__main__":
     # download_office_home(args.data_dir)
     # download_domain_net(args.data_dir)
     # download_vlcs(args.data_dir)
-    # download_pacs(args.data_dir)
+    download_pacs(args.data_dir)
     # download_terra_incognita(args.data_dir)
     # download_spawrious(args.data_dir)
     # download_sviro(args.data_dir)
@@ -282,11 +282,11 @@ if __name__ == "__main__":
     # FMoWDataset(root_dir=args.data_dir, download=True)
     
     # NTL task: digits(mm+sn), cifar, stl, visda
-    # download_mnist_m(args.data_dir)
+    #download_mnist_m(args.data_dir)
     # download_synthetic_digits(args.data_dir)
-    download_cifar(args.data_dir)
-    download_stl(args.data_dir)
-    # download_visda(args.data_dir)
+    #download_cifar(args.data_dir)
+    #download_stl(args.data_dir)
+    #download_visda(args.data_dir)
     
     # SOPHON task: apply imagenette as source domain
     # download_imagenette(args.data_dir)

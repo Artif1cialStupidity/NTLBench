@@ -109,8 +109,8 @@ class Cus_Dataset(data.Dataset):
 
 
 def split():
-    image_size = 64
-    # image_size = 32
+    image_size = 128
+    #image_size = 112
     # sample_num = 5000
     data_transforms = transforms.Compose([
                     transforms.ToPILImage(),
@@ -125,14 +125,14 @@ def split():
             #    'sn': get_svhn_data,
             #    'mm': get_mnist_m_data,
             #    'sd': get_syn_data,
-               'cifar': get_cifar_data,
-               'stl': get_stl_data,
-            #    'visda_t': get_visda_data_src,
-            #    'visda_v': get_visda_data_tgt,
-            #    'home_art': get_home_art, 
-            #    'home_cli': get_home_cli, 
-            #    'home_pd': get_home_pd, 
-            #    'home_rw': get_home_rw,
+            #   'cifar': get_cifar_data,
+            #   'stl': get_stl_data,
+                # 'visda_t': get_visda_data_src,
+                # 'visda_v': get_visda_data_tgt,
+               'home_art': get_home_art, 
+               'home_cli': get_home_cli, 
+               'home_pd': get_home_pd, 
+               'home_rw': get_home_rw,
             #    'vlcs_v': get_vlcs_V,
             #    'vlcs_c': get_vlcs_C,
             #    'vlcs_l': get_vlcs_L,
@@ -224,7 +224,7 @@ if __name__ == '__main__':
     exit()
 
     # load:
-    loaded = torch.load('data_presplit/mt_64.pth')
+    loaded = torch.load('data_presplit/mt_112.pth')
     loaded['train']
     loaded['test']
     pass

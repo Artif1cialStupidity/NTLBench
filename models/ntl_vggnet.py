@@ -28,21 +28,33 @@ model_urls = {
 
 
 class VGG(nn.Module):
-
     def __init__(self, features, num_classes=1000, init_weights=True, img_size=32):
         super(VGG, self).__init__()
         self.features = features
-        #torch.nn.ModuleDict(features)
         self.layer_n = len(features)
+        
+        # --- 修复核心：增加 128 支持并添加自动计算逻辑 ---
         if img_size == 64:
-            feature_dim = 512*2*2 
+            feature_dim = 512 * 2 * 2 
         elif img_size == 32:
-            feature_dim = 512 #*7*7
+            feature_dim = 512 
         elif img_size == 112:
-            feature_dim = 512*3*3 #*7*7
+            feature_dim = 512 * 3 * 3 
+        elif img_size == 128:
+            feature_dim = 512 * 4 * 4  # 128 / 32 = 4
+        elif img_size == 224:
+            feature_dim = 512 * 7 * 7  # 224 / 32 = 7
+        else:
+            # 万能公式：VGG13 经过 5 次池化，尺寸缩小 32 倍
+            # 计算最后的特征图宽度 (w)
+            w = img_size // 32
+            feature_dim = 512 * w * w
+            print(f"Notice: Auto-calculated feature_dim for size {img_size} is {feature_dim}")
+
         self.feature_dim = feature_dim
+        # ----------------------------------------------
+
         self.classifier1 = nn.Sequential(
-            #self.classifier = nn.Sequential(
             nn.Linear(feature_dim, 256),
             nn.ReLU(True),
             nn.Dropout(),
@@ -53,8 +65,6 @@ class VGG(nn.Module):
         )
         if init_weights:
             self._initialize_weights()
-        
-        #self.c1 = nn.Conv2d(64, 64, kernel_size=1, padding=1, groups=64)
 
     def forward(self, x, y=None):
         if y == None:
