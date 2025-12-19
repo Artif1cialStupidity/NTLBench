@@ -29,35 +29,20 @@ DOMAIN_SEQUENCES = {
 }
 
 MODEL_PATHS = {
-
     'digits': {
-
         'SL': './saved_models/SL_rmt0_vgg13.pth',
-
-    'tNTL': './saved_models/tNTL_rmt0_rmt45_vgg13.pth',
-
-    'HNTL': './saved_models/tHNTL_rmt0_rmt45_vgg13.pth',
-
-    'CUTI': './saved_models/tCUTI_rmt0_rmt45_vgg13.pth',
-
-    'SOPHON': './saved_models/tSOPHON_rmt0_rmt45_vgg13.pth',
-
+        'tNTL': './saved_models/tNTL_rmt0_rmt45_vgg13.pth',
+        'HNTL': './saved_models/tHNTL_rmt0_rmt45_vgg13.pth',
+        'CUTI': './saved_models/tCUTI_rmt0_rmt45_vgg13.pth',
+        'SOPHON': './saved_models/tSOPHON_rmt0_rmt45_vgg13.pth',
     },
-
     'pacs': {
-
         'SL': './saved_models/SL_pacs_p_vgg13.pth',
-
-    'tNTL': './saved_models/tNTL_pacs_p_pacs_s_vgg13.pth',
-
-    'HNTL': './saved_models/tHNTL_pacs_p_pacs_s_vgg13.pth',
-
-    'CUTI': './saved_models/tCUTI_pacs_p_pacs_s_vgg13.pth',
-
-    'SOPHON': './saved_models/tSOPHON_pacs_p_pacs_s_vgg13.pth',
-
+        'tNTL': './saved_models/tNTL_pacs_p_pacs_s_vgg13.pth',
+        'HNTL': './saved_models/tHNTL_pacs_p_pacs_s_vgg13.pth',
+        'CUTI': './saved_models/tCUTI_pacs_p_pacs_s_vgg13.pth',
+        'SOPHON': './saved_models/tSOPHON_pacs_p_pacs_s_vgg13.pth',
     }
-
 }
 
 # ==========================================
@@ -69,20 +54,19 @@ class MockConfig:
         self.dataset = args.dataset
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         
-        # [关键修正] 统一使用 64x64 分辨率 (匹配您的训练)
-        self.image_size = 64 
+        # [关键修正] 统一使用 128x128 分辨率 (PACS必须是128)
+        self.image_size = 128 if args.dataset == 'pacs' else 64
         
         if args.dataset == 'pacs':
-            # [关键修正] 根据您的日志，PACS 也是用 VGG13 训练的
             self.teacher_network = 'vgg13' 
             self.num_classes = 7
+            self.teacher_pretrain = True 
         else: # digits
             self.teacher_network = 'vgg13'
             self.num_classes = 10
+            self.teacher_pretrain = False
             
-        self.teacher_pretrain = False
         self.task_name = method_name if method_name else 'SL'
-        # 占位符，用于辅助模型构建
         self.domain_src = 'pacs_p' if args.dataset == 'pacs' else 'rmt0' 
 
 # ==========================================
@@ -107,9 +91,6 @@ def get_raw_data_loader(domain_name):
 
 def get_dataloader(domain_name, config, batch_size=64):
     raw_data = get_raw_data_loader(domain_name)
-    
-    # Cus_Dataset 会读取 config.image_size (64) 并进行 Resize
-    # 这样评估时的图片大小就和训练时一致了
     dataset = Cus_Dataset(
         mode='val', 
         dataset_1=raw_data, 
@@ -117,7 +98,6 @@ def get_dataloader(domain_name, config, batch_size=64):
         size1=raw_data[2],
         config=config
     )
-    
     loader = DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=4)
     return loader
 
@@ -132,14 +112,12 @@ def load_method_model(method_name, path, config):
         
     print(f"Loading {method_name} ({config.teacher_network}) from {path}...")
     
-    # 1. 构建 VGG13 (64x64)
     try:
         model = official_load_model(config)
     except Exception as e:
         print(f"Error building model: {e}")
         return None
     
-    # 2. 加载权重
     try:
         checkpoint = torch.load(path, map_location=config.device)
         if isinstance(checkpoint, dict) and 'state_dict' in checkpoint:
@@ -150,8 +128,6 @@ def load_method_model(method_name, path, config):
             state_dict = checkpoint.state_dict()
             
         new_state_dict = {k.replace("module.", ""): v for k, v in state_dict.items()}
-        
-        # 宽容加载
         model.load_state_dict(new_state_dict, strict=False)
         
     except Exception as e:
@@ -160,6 +136,29 @@ def load_method_model(method_name, path, config):
         
     model.eval()
     return model
+
+# ==========================================
+# 辅助函数：标签形状修正
+# ==========================================
+def fix_label_shape(labels):
+    """
+    统一处理各种奇形怪状的 Label，目标是输出 (Batch_Size,) 的 LongTensor
+    输入可能是: (B, 1, C), (B, C), (B, 1), (B,)
+    """
+    # 1. 如果有中间的 singleton 维度 (B, 1, ...)，先压缩
+    if labels.dim() > 1 and labels.shape[1] == 1:
+        labels = labels.squeeze(1)
+        
+    # 2. 检查是否为 One-Hot (B, C) 其中 C > 1
+    # 我们检查最后一维，如果 > 1 则认为是类别概率/One-Hot
+    if labels.dim() > 1 and labels.shape[-1] > 1:
+        labels = torch.argmax(labels, dim=-1)
+        
+    # 3. 经过上述处理，如果还有多余维度 (B, 1)，再次展平为 (B,)
+    if labels.dim() > 1:
+        labels = labels.view(-1)
+        
+    return labels
 
 # ==========================================
 # 评估与特征提取
@@ -173,10 +172,11 @@ def extract_features(model, dataloader, device, max_samples=500):
     with torch.no_grad():
         for imgs, labels in dataloader:
             imgs = imgs.to(device)
-            # 维度修复
-            if labels.dim() == 3 and labels.shape[1] == 1: labels = labels.squeeze(1)
-            if labels.dim() > 1 and labels.shape[1] > 1: labels = torch.argmax(labels, dim=1)
-            else: labels = labels.view(-1)
+            labels = labels.to(device)
+            
+            # --- 修复标签形状 ---
+            labels = fix_label_shape(labels)
+            # -------------------
             
             # VGG 特征提取
             if hasattr(model, 'forward_f'): 
@@ -200,16 +200,25 @@ def evaluate_accuracy(model, dataloader, device):
     model.eval()
     with torch.no_grad():
         for imgs, labels in dataloader:
-            imgs, labels = imgs.to(device), labels.to(device)
+            imgs = imgs.to(device)
+            labels = labels.to(device)
             
-            if labels.dim() == 3 and labels.shape[1] == 1: labels = labels.squeeze(1)
-            if labels.dim() > 1 and labels.shape[1] > 1: labels = torch.argmax(labels, dim=1)
-            else: labels = labels.view(-1)
+            # --- 修复标签形状 ---
+            labels = fix_label_shape(labels)
+            # -------------------
 
             outputs = model(imgs)
             if isinstance(outputs, tuple): outputs = outputs[0]
+            if isinstance(outputs, dict): outputs = outputs['pred']
             
             _, predicted = torch.max(outputs.data, 1)
+            
+            # 确保 predicted 和 labels 形状一致再比较
+            if predicted.shape != labels.shape:
+                print(f"Shape mismatch! Pred: {predicted.shape}, Label: {labels.shape}")
+                # 尝试强制对齐
+                labels = labels.view_as(predicted)
+
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
     return 100 * correct / total
@@ -237,7 +246,7 @@ def main():
     models_loaded = {}
     print(f"\n[Init] Evaluation: {args.dataset}, Size: {base_config.image_size}, Net: {base_config.teacher_network}")
     for method, path in paths.items():
-        # 更新 MockConfig 以匹配当前方法的 task_name (虽然对 VGG 影响不大)
+        # 更新 MockConfig 以匹配当前方法的 task_name
         method_config = MockConfig(args, method_name=method)
         model = load_method_model(method, path, method_config)
         if model: models_loaded[method] = model
@@ -291,7 +300,6 @@ def main():
         
         if not X_list: continue
         X = np.concatenate(X_list)
-        # Jitter Fix
         X += 1e-4 * np.random.randn(*X.shape)
         
         tsne = TSNE(n_components=2, perplexity=min(30, len(X)-1), init='pca', learning_rate='auto')

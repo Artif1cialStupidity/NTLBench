@@ -135,9 +135,11 @@ def creat_disentangle_model(config, only_student=False, num_styles=2, teacher_ne
     elif config.image_size == 64:
         f_dim = 512 if config.HNTL_adapt_pooling else 512*2*2
     elif config.image_size == 128:
-        # f_dim = 512 if config.HNTL_adapt_pooling else 0
-        if config.adapt_pooling:
-            raise Exception
+        # [Fix] Use correct config name and enable support
+        f_dim = 512 if config.HNTL_adapt_pooling else 512*4*4
+        if not config.HNTL_adapt_pooling:
+            # Decoder doesn't support non-pooling for 128 yet
+            raise NotImplementedError("Non-pooling for 128 is not supported in decoder")
 
     model_c = VGG_feature_VAE_enc(copy.deepcopy(feature),
                                   img_size=config.image_size,

@@ -7,7 +7,7 @@ domain_src:
 domain_tgt:
   value: pacs_s
 image_size:
-  value: 64
+  value: 128
 num_classes:
   value: 7
 seed:
