@@ -21,7 +21,7 @@ pre_split:
 data_transform:
   value: ntl
 teacher_network:
-  value: resnet18
+  value: vgg13
 teacher_pretrain:
   value: True
 train_teacher_scratch:

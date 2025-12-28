@@ -36,12 +36,19 @@ MODEL_PATHS = {
         'CUTI': './saved_models/tCUTI_rmt0_rmt45_vgg13.pth',
         'SOPHON': './saved_models/tSOPHON_rmt0_rmt45_vgg13.pth',
     },
+    # 'pacs': {
+    #     'SL': './saved_models/SL_pacs_p_vgg13.pth',
+    #     'tNTL': './saved_models/tNTL_pacs_p_pacs_s_vgg13.pth',
+    #     'HNTL': './saved_models/tHNTL_pacs_p_pacs_s_vgg13.pth',
+    #     'CUTI': './saved_models/tCUTI_pacs_p_pacs_s_vgg13.pth',
+    #     'SOPHON': './saved_models/tSOPHON_pacs_p_pacs_s_vgg13.pth',
+    # }
     'pacs': {
         'SL': './saved_models/SL_pacs_p_vgg13.pth',
-        'tNTL': './saved_models/tNTL_pacs_p_pacs_s_vgg13.pth',
-        'HNTL': './saved_models/tHNTL_pacs_p_pacs_s_vgg13.pth',
-        'CUTI': './saved_models/tCUTI_pacs_p_pacs_s_vgg13.pth',
-        'SOPHON': './saved_models/tSOPHON_pacs_p_pacs_s_vgg13.pth',
+        'tNTL': './saved_models/tNTL_pacs_p_pacs_a_vgg13.pth',
+        'HNTL': './saved_models/tHNTL_pacs_p_pacs_a_vgg13.pth',
+        'CUTI': './saved_models/tCUTI_pacs_p_pacs_a_vgg13.pth',
+        'SOPHON': './saved_models/tSOPHON_pacs_p_pacs_a_vgg13.pth',
     }
 }
 

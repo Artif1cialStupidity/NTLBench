@@ -5,7 +5,7 @@ task_name:
 domain_src:
   value: pacs_p
 domain_tgt:
-  value: pacs_s
+  value: pacs_a
 image_size:
   value: 128
 num_classes:
@@ -21,7 +21,7 @@ pre_split:
 data_transform:
   value: ntl
 teacher_network:
-  value: resnet18
+  value: vgg13
 teacher_pretrain:
   value: True
 train_teacher_scratch:
